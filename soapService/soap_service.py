@@ -8,9 +8,6 @@ class CalcService(sp.Service):
     # distance (km), vitesse (km/h), temps de charge (s), distance de charge (km)
     @sp.rpc(sp.Float, sp.Float, sp.Integer, sp.Float, _returns=sp.Float)
     def calcTravelTime(self, distance, speed, chargeTime, chargeDistance):
-        """
-        Calcule le temps de trajet en fonction de la distance, de la vitesse, du temps de charge et de la distance de charge
-        """
         travelTime = (distance / speed) * 3600 # calcul du temps de trajet en secondes
         nbCharge = distance // chargeDistance # calcul du nombre de charge
         travelTime += nbCharge * chargeTime # ajout du temps de charge
