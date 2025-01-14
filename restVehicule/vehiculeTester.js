@@ -1,22 +1,23 @@
-const http = require('http');
+import http from 'http';
 
 const options = {
-  port: process.env.PRISE_PORT || 3000,
+  port: process.env.VEHICLE_PORT || 3000,
   hostname: process.env.HOST || 'localhost',
-  path: '/nearest?lat=45&lon=6',
+  path: '/list?page=0&size=100&search=',
   headers: {},
   method: 'GET',
 };
 
 function dataTesting(data) {
     console.log("Data: ", data);
-    console.log(data.id_station);
-    console.log("lat : ", data.xlongitude);
-    console.log("lon : ", data.ylatitude);
-    console.log("puissance : ", data.puiss_max);
-    console.log("type : ", data.type_prise);
-    console.log("accès : ", data.acces_recharge);
-    console.log("adresse : ", data.ad_station);
+    console.log("nb Vehicules : ", data.length);
+    if(data.length > 0) {
+      const vehicule = data[0];
+      console.log("Vehicule: ", vehicule);
+      console.log("Vehicule ID: ", vehicule.id);
+      console.log("Vehicule Make: ", vehicule.naming.make);
+      console.log("Vehicule Model: ", vehicule.naming.model);
+    }
 }
 
 
@@ -32,6 +33,7 @@ const req = http.get(options, (res) => {
 
   res.on('end', () => {
     console.log('No more data');
+    console.log("data: ", data);
     const parsedData = JSON.parse(data);
     dataTesting(parsedData);
   });
