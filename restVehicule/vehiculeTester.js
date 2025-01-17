@@ -1,7 +1,7 @@
 import http from 'http';
 
 const options = {
-  port: process.env.VEHICLE_PORT || 3000,
+  port: process.env.VEHICLE_PORT || 3002,
   hostname: process.env.HOST || 'localhost',
   path: '/list?page=0&size=100&search=',
   headers: {},

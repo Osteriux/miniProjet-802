@@ -3,7 +3,7 @@ import qql from 'graphql-tag';
 import express from 'express';
 
 const app = express();
-const port = process.env.VEHICLE_PORT || 3000;
+const port = process.env.VEHICLE_PORT || 3002;
 
 const headers = {
     'x-client-id': '678529ba4dd456c02066b772',

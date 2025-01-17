@@ -1,5 +1,5 @@
 {
-  "name": "miniprojet-802",
+  "name": "restroute",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "miniprojet-802": "file:"
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "restroute": "file:"
   }
 }

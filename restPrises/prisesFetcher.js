@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = process.env.PRISE_PORT || 3000;
+const port = process.env.PRISE_PORT || 3001;
 
 function makeApiUrl(lat, lon, distance = 100) {
     // console.log("fetching with : ", lat, lon, distance);

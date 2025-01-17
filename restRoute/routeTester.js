@@ -1,22 +1,15 @@
 const http = require('http');
 
 const options = {
-  port: process.env.PRISE_PORT || 3001,
+  port: process.env.ROUTE_PORT || 3004  ,
   hostname: process.env.HOST || 'localhost',
-  path: '/nearest?lat=45&lon=6',
+  path: '/route?slat=48.8566&slon=2.3522&elat=48.8566&elon=2.3522',
   headers: {},
   method: 'GET',
 };
 
 function dataTesting(data) {
     console.log("Data: ", data);
-    console.log(data.id_station);
-    console.log("lat : ", data.xlongitude);
-    console.log("lon : ", data.ylatitude);
-    console.log("puissance : ", data.puiss_max);
-    console.log("type : ", data.type_prise);
-    console.log("accès : ", data.acces_recharge);
-    console.log("adresse : ", data.ad_station);
 }
 
 
