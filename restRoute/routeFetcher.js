@@ -4,15 +4,32 @@ const app = express();
 const port = process.env.ROUTE_PORT || 3004;
 
 app.use(cors());
+app.use(express.json());
 
-function makeApiUrl(slat, slon, elat, elon) {
+function makeGetApiUrl(slat, slon, elat, elon) {
     return `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${process.env.OPENROUTE_TOKEN}&start=${slat},${slon}&end=${elat},${elon}`;
 }
 
-async function fetchData(slat, slon, elat, elon) {
-    const url = makeApiUrl(slat, slon, elat, elon);
+const PostApiUrl = "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
+
+async function fetchGetData(slat, slon, elat, elon) {
+    const url = makeGetApiUrl(slat, slon, elat, elon);
     console.log(url);
     const response = await fetch(url);
+    return response.json();
+}
+
+async function fetchPostData(positions) {
+    const response = await fetch(PostApiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': process.env.OPENROUTE_TOKEN
+        },
+        body: JSON.stringify({
+            coordinates: positions
+        })
+    });
     return response.json();
 }
 
@@ -21,8 +38,16 @@ app.get("/route", async (req, res) => {
 
     const { slat, slon, elat, elon } = req.query;
     res.setHeader('Content-Type', 'application/json');
-    const data = await fetchData(slat, slon, elat, elon);
+    const data = await fetchGetData(slat, slon, elat, elon);
     res.end(JSON.stringify(data));
 });
 
-app.listen(port, () => console.log(`Prise Fetcher listening on port ${port}!`));
+app.post("/route", async (req, res) => {
+    console.log("body", req.body);
+
+    res.setHeader('Content-Type', 'application/json');
+    const data = await fetchPostData(req.body.positions);
+    res.end(JSON.stringify(data));
+});
+
+app.listen(port, () => console.log(`Route Fetcher listening on port ${port}!`));

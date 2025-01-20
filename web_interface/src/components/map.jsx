@@ -1,30 +1,53 @@
-import React from 'react';
-import ReactMapboxGl, { GeoJSONLayer, Layer, Feature } from 'react-mapbox-gl';
+import React, {useEffect, useState, useContext} from 'react';
+import ReactMapboxGl, { GeoJSONLayer, Marker } from 'react-mapbox-gl';
 import startMarqueur from '../assets/marqueur_start.svg';
 import endMarqueur from '../assets/marqueur_end.svg';
-import { test } from '../lib';
+import priseMarqueur from '../assets/marqueur_prise.svg';
+import { fetchRouteGeoJson, fetchPrisesListe, fetchCorrectedRouteGeoJson } from '../lib';
+import { SearchContext } from '../globals';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 export function Map() {
     const Map = ReactMapboxGl({
-        accessToken:
-        'pk.eyJ1IjoieGF2bWF6IiwiYSI6ImNtNjBnbDY4bDBhamQyanNiZnl6NXY1aDEifQ.49Dbre_-2F12TDpy5sLIsA',
+        accessToken: process.env.REACT_APP_MAPBOX_TOKEN,
         pitchWithRotate: false,
-        dragRotate: false
+        dragRotate: false,
+        refreshExpiredTiles: false
     });
-    const [geoJson, setGeoJson] = React.useState(null);
-    const [start, setStart] = React.useState(null);
-    const [end, setEnd] = React.useState(null);
+    const { startCoord, endCoord } = useContext(SearchContext);
+    const [geoJson, setGeoJson] = useState(null);
+    const [upGeoJson, setUpGeoJson] = useState(false);
+    const [prises, setPrises] = useState([]);
 
-    React.useEffect(() => {
-        test().then(geoJson => {
-            setGeoJson(geoJson);
-            setStart(geoJson.features[0].geometry.coordinates[0]);
-            setEnd(geoJson.features[0].geometry.coordinates[geoJson.features[0].geometry.coordinates.length -1]);
-            console.log(start, end);
-            console.log(startMarqueur, endMarqueur);
-        });
-    }, []);
+    useEffect(() => {
+        if(startCoord && endCoord) {
+            fetchRouteGeoJson(startCoord[0], startCoord[1], endCoord[0], endCoord[1]).then(geoJson => {
+                setGeoJson(geoJson);
+                setUpGeoJson(!upGeoJson);
+            });
+        }
+    }, [startCoord, endCoord]);
+
+    useEffect(() => {
+        if(geoJson) {
+            fetchPrisesListe(geoJson.features[0].geometry.coordinates, 100)
+            .then(prises => {
+                console.log(prises);
+                setPrises(prises);
+                let coords = [startCoord];
+                prises.forEach(prise => {
+                    coords.push([prise.xlongitude, prise.ylatitude]);
+                });
+                coords.push(endCoord);
+                console.log("cords" ,coords);
+                fetchCorrectedRouteGeoJson(coords)
+                .then(geoJson => {
+                    console.log("corrected", geoJson);
+                    setGeoJson(geoJson);
+                });
+            });
+        }
+    }, [upGeoJson]);
 
     return (<Map
     style="mapbox://styles/mapbox/streets-v9"
@@ -35,20 +58,25 @@ export function Map() {
     center={[3.2877,47.3318]}
     zoom={[5]}
     >
+        {startCoord && <Marker coordinates={startCoord} anchor="center">
+            <img src={startMarqueur} alt="start" className='img-marqueur' />
+        </Marker>}
+        {endCoord && <Marker coordinates={endCoord} anchor="center">
+            <img src={endMarqueur} alt="end" className='img-marqueur' />
+        </Marker>}
         {geoJson && <>
-        <GeoJSONLayer 
-            data={geoJson}
-            lineLayout={{
-                'line-cap': 'round',
-                'line-join': 'round'
-            }}
-        />
-        <Layer type="symbol" id="marker-start" layout={{ 'icon-image': startMarqueur }}>
-            <Feature coordinates={start} />
-        </Layer>
-        <Layer type="symbol" id="marker-end" layout={{ 'icon-image': endMarqueur }}>
-            <Feature coordinates={end} />
-        </Layer>
+            {prises && prises.map((prise, index) => {
+                return <Marker key={index} coordinates={[prise.xlongitude, prise.ylatitude]} anchor="center">
+                    <img src={priseMarqueur} alt="prise" className='img-marqueur' />
+                </Marker>
+            })}
+            <GeoJSONLayer 
+                data={geoJson}
+                lineLayout={{
+                    'line-cap': 'round',
+                    'line-join': 'round'
+                }}
+            />
         </>}
     </Map>);
 }

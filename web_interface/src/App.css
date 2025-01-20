@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+.img-marqueur {
+  width: 30px;
+  height: 30px;
+}
+
+#searchBar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  background-color: white;
+  border-radius: 5px;
+}

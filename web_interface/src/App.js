@@ -1,12 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { Map, SearchBar } from './components';
+import { SearchContext, initialSearchContext } from './globals';
 import './App.css';
-import { Map } from './components';
 
 function App() {
+  const [startCoord, setStartCoord] = useState(initialSearchContext.startCoord);
+  const [endCoord, setEndCoord] = useState(initialSearchContext.endCoord);
+
   return (
     <div className="App">
-      <Map />
+      <SearchContext.Provider value={{ startCoord, setStartCoord, endCoord, setEndCoord }}>
+        <Map />
+        <SearchBar />
+      </SearchContext.Provider>
     </div>
   );
 }
