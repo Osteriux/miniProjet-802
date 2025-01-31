@@ -13,7 +13,10 @@ async function test(){
 
 async function fetchRouteGeoJson(slat, slon, elat, elon){
     const url = makeUrl(slat, slon, elat, elon);
-    const response = await fetch(url);
+    const response = await fetch(url)
+    .catch(err => {
+        console.log(err);
+    });
     return response.json();
 }
 

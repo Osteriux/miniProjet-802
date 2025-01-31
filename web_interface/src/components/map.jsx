@@ -18,6 +18,7 @@ export function Map() {
     const [geoJson, setGeoJson] = useState(null);
     const [upGeoJson, setUpGeoJson] = useState(false);
     const [prises, setPrises] = useState([]);
+    const [dist, setDist] = useState(null);
 
     useEffect(() => {
         if(startCoord && endCoord) {
@@ -31,8 +32,10 @@ export function Map() {
     useEffect(() => {
         if(geoJson) {
             fetchPrisesListe(geoJson.features[0].geometry.coordinates, 100)
-            .then(prises => {
+            .then((prises, dist) => {
                 console.log(prises);
+                console.log(dist);
+                setDist(dist);
                 setPrises(prises);
                 let coords = [startCoord];
                 prises.forEach(prise => {

@@ -23,7 +23,7 @@ async function fetchPrisesListe(path, autonomie, startautonomie = 0) {
     var prises = [];
     let i = 1;
     let currPos = path[0];
-    let currdist = autonomie - startautonomie;
+    let currdist = startautonomie;
     let dist = 0;
     while(i < path.length){
         dist = calcDist(currPos[1], currPos[0], path[i][1], path[i][0]);
@@ -54,7 +54,7 @@ async function fetchPrisesListe(path, autonomie, startautonomie = 0) {
         }
         i++;
     }
-    return prises;
+    return (prises, dist);
 }
 
 export { fetchPrisesListe };

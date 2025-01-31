@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Map, SearchBar } from './components';
+import { Map, SearchBar, VehicleSelector } from './components';
 import { SearchContext, initialSearchContext } from './globals';
 import './App.css';
 
@@ -10,8 +10,9 @@ function App() {
   return (
     <div className="App">
       <SearchContext.Provider value={{ startCoord, setStartCoord, endCoord, setEndCoord }}>
-        <Map />
+        <VehicleSelector />
         <SearchBar />
+        <Map />
       </SearchContext.Provider>
     </div>
   );

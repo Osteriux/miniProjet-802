@@ -18,23 +18,29 @@ export function SearchBar() {
     }
 
     return (<div id="searchBar">
-        <SearchBox
-            id="startSearch"
-            accessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-            options={{
-                language: 'fr',
-                country: 'FR'
-            }}
-            onRetrieve={(e) => onChange(e, true)}
-        />
-        <SearchBox
-            id="startSearch"
-            accessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-            options={{
-                language: 'fr',
-                country: 'FR'
-            }}
-            onRetrieve={(e) => onChange(e, false)}
-        />
+        <div className='search-item'>
+            <p>Depart : </p>
+            <SearchBox
+                id="startSearch"
+                accessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+                options={{
+                    language: 'fr',
+                    country: 'FR'
+                }}
+                onRetrieve={(e) => onChange(e, true)}
+            />
+        </div>
+        <div className='search-item'>
+            <p>Arrivé : </p>
+            <SearchBox
+                id="startSearch"
+                accessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+                options={{
+                    language: 'fr',
+                    country: 'FR'
+                }}
+                onRetrieve={(e) => onChange(e, false)}
+            />
+        </div>
     </div>);
 }
