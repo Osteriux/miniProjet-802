@@ -50,47 +50,50 @@ query vehicle($vehicleId: ID!) {
       make
       model
       chargetrip_version
+    }
+    connectors {
+      standard
+      time
+    }
+    media {
+      image {
+        url
       }
-      media {
-        image {
-          url
-          }
-          brand {
-            thumbnail_url
-            }
-            }
-            battery {
-              usable_kwh
-              }
-              range {
-                best {
-                  highway
-                  city
-                  combined
-                  }
+      brand {
+        thumbnail_url
+      }
+    }
+    battery {
+      usable_kwh
+    }
+    range {
+      best {
+        highway
+        city
+        combined
+      }
       worst {
         highway
         city
         combined
-        }
-        chargetrip_range {
-          best
-          worst
-          }
+      }
+      chargetrip_range {
+        best
+        worst
+      }
     }
     routing {
       fast_charging_support
-      }
-      connectors {
-        standard
-        }
-        performance {
-          acceleration
-          top_speed
-          }
-          }
-          }
-          `;
+    }
+    connectors {
+      standard
+    }
+    performance {
+      acceleration
+      top_speed
+    }
+  }
+}`;
           
 async function getVehicleList(page, size = 10, search = ''){
   return await client

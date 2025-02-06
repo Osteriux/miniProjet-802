@@ -1,4 +1,4 @@
-function makeSoapRequest(dist, speed, tps_charge, autonomie){
+function makeSoapRequest(dist, speed, tps_charge, nbCharge){
     return `
         <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:min="miniprojet.soap.calcservice">
         <soapenv:Header/>
@@ -11,16 +11,16 @@ function makeSoapRequest(dist, speed, tps_charge, autonomie){
                 <!--Optional:-->
                 <min:chargeTime>${tps_charge}</min:chargeTime>
                 <!--Optional:-->
-                <min:chargeDistance>${autonomie}</min:chargeDistance>
+                <min:nbCharge>${nbCharge}</min:nbCharge>
             </min:calcTravelTime>
         </soapenv:Body>
         </soapenv:Envelope>
     `
 }
 
-async function fetchTrajetPrediction(dist, speed, tps_charge, autonomie) {
+async function fetchTrajetPrediction(dist, speed, tps_charge, nbCharge) {
     const url = 'http://127.0.0.1:8000';
-    const soapRequest = makeSoapRequest(dist, speed, tps_charge, autonomie)
+    const soapRequest = makeSoapRequest(dist, speed, tps_charge, nbCharge)
 
     const response = await fetch(url, {
         method: 'POST',

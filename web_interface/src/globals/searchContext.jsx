@@ -4,7 +4,11 @@ const initialSearchContext = {
     startCoord: null,
     setStartCoord: () => {},
     endCoord: null,
-    setEndCoord: () => {}
+    setEndCoord: () => {},
+    dist: null,
+    setDist: () => {},
+    nbCharges: null,
+    setNbCharges: () => {}
 }
 
 const SearchContext = createContext(initialSearchContext);

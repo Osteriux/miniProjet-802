@@ -14,11 +14,10 @@ export function Map() {
         dragRotate: false,
         refreshExpiredTiles: false
     });
-    const { startCoord, endCoord } = useContext(SearchContext);
+    const { startCoord, endCoord, setDist, setNbCharges } = useContext(SearchContext);
     const [geoJson, setGeoJson] = useState(null);
     const [upGeoJson, setUpGeoJson] = useState(false);
     const [prises, setPrises] = useState([]);
-    const [dist, setDist] = useState(null);
 
     useEffect(() => {
         if(startCoord && endCoord) {
@@ -37,6 +36,7 @@ export function Map() {
                 console.log(dist);
                 setDist(dist);
                 setPrises(prises);
+                setNbCharges(prises.length);
                 let coords = [startCoord];
                 prises.forEach(prise => {
                     coords.push([prise.xlongitude, prise.ylatitude]);

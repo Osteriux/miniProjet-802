@@ -6,11 +6,10 @@ import lxml
 from wsgiref.util import setup_testing_defaults
 
 class CalcService(sp.Service):
-    # distance (km), vitesse (km/h), temps de charge (s), distance de charge (km)
-    @sp.rpc(sp.Float, sp.Float, sp.Integer, sp.Float, _returns=sp.Float)
-    def calcTravelTime(self, distance, speed, chargeTime, chargeDistance):
+    # distance (km), vitesse (km/h), temps de charge (s), nombre de charge (km)
+    @sp.rpc(sp.Float, sp.Float, sp.Integer, sp.Integer, _returns=sp.Float)
+    def calcTravelTime(self, distance, speed, chargeTime, nbCharge):
         travelTime = (distance / speed) * 3600 # calcul du temps de trajet en secondes
-        nbCharge = distance // chargeDistance # calcul du nombre de charge
         travelTime += nbCharge * chargeTime # ajout du temps de charge
         return travelTime
 

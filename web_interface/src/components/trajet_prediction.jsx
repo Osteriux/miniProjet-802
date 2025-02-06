@@ -1,12 +1,19 @@
 import React from 'react'
 import { fetchTrajetPrediction } from '../lib'
+import { SearchContext } from '../globals'
 
-export function TrajetPrediction(){
-
+export function TrajetPrediction(props){
+    const { dist, nbCharge } = React.useContext(SearchContext)
     const [time, setTime] = React.useState(null)
 
     React.useEffect(() => {
-        fetchTrajetPrediction(463, 80, 1800, 100)
+        // TODO
+        let chargetime = 0;
+        for(const key in props.chargeTimeDic){
+            chargetime += props.chargeTimeDic[key];
+        }
+        chargetime /= props.chargeTimeDic.length;
+        fetchTrajetPrediction(dist, props.speed, chargetime, nbCharge)
         .then(resp => {
             console.log(resp);
             setTime(resp["time-pred"]);

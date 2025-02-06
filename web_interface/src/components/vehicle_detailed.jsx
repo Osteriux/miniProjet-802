@@ -2,6 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { TrajetPrediction } from './trajet_prediction';
 
 export function VehicleDetail(props) {
+    const [chargeTimeDic, setChargeTimeDic] = useState(null);
+
+    useEffect(() => {
+        if(props.data && props.data.connectors) {
+            let chargeTimeDic = {};
+            props.data.connectors.forEach(connector => {
+                chargeTimeDic[connector.standard] = connector.time;
+            });
+            setChargeTimeDic(chargeTimeDic);
+        }
+    }, []);
 
 
     return (
@@ -17,7 +28,11 @@ export function VehicleDetail(props) {
                     <h2>{props.data.naming.model} {props.data.naming.make}</h2>
                     <p>{props.data.naming.chargetrip_version}</p>
                 </div>
-                <TrajetPrediction />
+                <TrajetPrediction
+                    speed={props.data.performance.top_speed}
+                    tpsCharge={1800}
+                    chargeTimeDic={chargeTimeDic}
+                />
                 <div className='vehicle-detail-info-container'>
                     <h3>Autonomie</h3>
                     <table className='range-table'>
